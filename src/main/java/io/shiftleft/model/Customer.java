@@ -3,6 +3,9 @@ package io.shiftleft.model;
 import java.util.Date;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,6 +22,8 @@ public class Customer {
   public Customer(String customerId, int clientId, String firstName, String lastName, Date dateOfBirth, String ssn,
       String socialInsurancenum, String tin, String phoneNumber, Address address, Set<Account> accounts) {
     super();
+    //Creating the Logger object
+    this.logger = LoggerFactory.getLogger("SampleLogger");
     this.clientId = clientId;
     this.customerId = customerId;
     this.firstName = firstName;
@@ -44,8 +49,6 @@ public class Customer {
 
   private String lastName;
 
-  private Date dateOfBirth;
-
   private String ssn;
 
   private String socialInsurancenum;
@@ -53,6 +56,8 @@ public class Customer {
   private String tin;
 
   private String phoneNumber;
+  
+  private Logger logger;
 
   @OneToOne(cascade = { CascadeType.ALL })
   private Address address;
@@ -78,10 +83,6 @@ public class Customer {
 
   public String getLastName() {
     return lastName;
-  }
-
-  public Date getDateOfBirth() {
-    return dateOfBirth;
   }
 
   public String getSsn() {
@@ -128,10 +129,6 @@ public class Customer {
     this.lastName = lastName;
   }
 
-  public void setDateOfBirth(Date dateOfBirth) {
-    this.dateOfBirth = dateOfBirth;
-  }
-
   public void setSsn(String ssn) {
     this.ssn = ssn;
   }
@@ -146,6 +143,7 @@ public class Customer {
 
   public void setPhoneNumber(String phoneNumber) {
     this.phoneNumber = phoneNumber;
+    logger.info("Log Phone Number: ", this.phoneNumber);
   }
 
   public void setAddress(Address address) {
@@ -159,7 +157,7 @@ public class Customer {
   @Override
   public String toString() {
     return "Customer [id=" + id + ", customerId=" + customerId + ", clientId=" + clientId + ", firstName=" + firstName
-        + ", lastName=" + lastName + ", dateOfBirth=" + dateOfBirth + ", ssn=" + ssn + ", socialInsurancenum="
+        + ", lastName=" + lastName + ", ssn=" + ssn + ", socialInsurancenum="
         + socialInsurancenum + ", tin=" + tin + ", phoneNumber=" + phoneNumber + ", address=" + address + ", accounts="
         + accounts + "]";
   }

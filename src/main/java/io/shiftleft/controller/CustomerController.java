@@ -78,15 +78,39 @@ public class CustomerController {
 	@Autowired
 	Environment env;
 	
+	@Autowired
+	Config conf;
+	
 	private static Logger log = LoggerFactory.getLogger(CustomerController.class);
 
 	@PostConstruct
 	public void init() {
+		String internalUrl = "https://localhost:8001/api/internal?sfdc";
+		
+		String sfdcUsername = env.getProperty("sfdc.username");
+		String sfdcPassword = env.getProperty("sfdc.password");
+		String machineAddress = conf.getProperty("machine.Address");
+		String sfdcUrl = "https://salesforce.com/skjdfnergnn";
 		log.info("Start Loading SalesForce Properties");
 		log.info("Url is {}", env.getProperty("sfdc.url"));
 		log.info("UserName is {}", env.getProperty("sfdc.username"));
 		log.info("Password is {}", env.getProperty("sfdc.password"));
 		log.info("End Loading SalesForce Properties");
+		this.setSalesforceProperties(sfdcUrl, sfdcUsername, sfdcPassword);
+		this.setInternalVals(internalUrl, sfdcUsername, sfdcPassword);
+	}
+
+	public void setSalesforceProperties(String url, String username, String password) {
+		env.setProperty("sfdc.url", url);
+		env.setProperty("sfdc.username", username);
+		env.setProperty("sfdc.password", password);
+	}
+	
+	
+	public void setInternalVals(String url, String username, String password) {
+		env.setProperty("internal.url", url);
+		env.setProperty("internal.username", username);
+		env.setProperty("internal.password", password);
 	}
 
 	private void dispatchEventToSalesForce(String event)
